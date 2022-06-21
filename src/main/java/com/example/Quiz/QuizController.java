@@ -18,7 +18,7 @@ public class QuizController {
         return showAll ?
             ResponseEntity.of(Optional.of(questionService.getQuestions())) 
         : 
-            ResponseEntity.of(Optional.of(questionService.getQuestionsByState(true))) ;
+            ResponseEntity.of(Optional.of(questionService.getQuestionsByState(true)));
     }
 
     @PostMapping("")

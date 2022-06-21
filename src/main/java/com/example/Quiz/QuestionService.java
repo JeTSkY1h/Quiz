@@ -15,9 +15,8 @@ public class QuestionService {
     private final QuestionRepo questionRepo;
     
     List<Question> getQuestions(){
-        List<Question> res = new ArrayList<Question>();
-        questionRepo.findAll().forEach(res::add);;
-        return res;       
+        
+        return questionRepo.findAll();
     }
 
     public Question saveQuestion(Question newQuestion) {
