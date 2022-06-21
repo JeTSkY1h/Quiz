@@ -1,9 +1,14 @@
 package com.example.Quiz;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
+import java.util.*;
 
-public interface QuestionRepo extends MongoRepository {
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+
+public interface QuestionRepo extends MongoRepository<Question, String> {
+
+    List<Question> findByApproved(Boolean approved);
     
+
 }
 
