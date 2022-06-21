@@ -31,5 +31,15 @@ public class QuestionService {
         return questionRepo.findByApproved(state);
     }
 
+    public Optional<Question> deleteQuestion(String id){
+        Optional<Question> questionToDel = getQuestion(id);
+        
+        if (questionToDel.isPresent()){
+            questionRepo.delete(questionToDel.get());
+            return Optional.of(questionToDel.get());
+        } 
+        return null;
+    }
+
 
 }

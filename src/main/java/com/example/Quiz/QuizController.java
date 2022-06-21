@@ -34,11 +34,20 @@ public class QuizController {
 
     @PutMapping("") 
     ResponseEntity<Question> saveQuestion(@RequestBody Question updatedQuestion){
-        return ResponseEntity.of(Optional.of(questionService.saveQuestion(updatedQuestion)));
+        Boolean isKnown = questionService.getQuestion(updatedQuestion.getId()).isPresent();
+        return isKnown ? 
+            ResponseEntity.of(Optional.of(questionService.saveQuestion(updatedQuestion))) 
+        : 
+            ResponseEntity.notFound().build();
     }
 
     @GetMapping("/approved")
     ResponseEntity<List<Question>> getApprovedQuestions(){
         return ResponseEntity.of(Optional.of(questionService.getQuestionsByState(true)));
+    }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Question> delQuestion(@PathVariable String id){
+        return ResponseEntity.of(questionService.deleteQuestion(id));
     }
 }
