@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/quiz")
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class QuizController {
     private final QuestionService questionService;
