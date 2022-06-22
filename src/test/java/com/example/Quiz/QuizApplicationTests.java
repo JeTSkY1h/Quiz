@@ -18,31 +18,31 @@ class QuizApplicationTests {
 
 	@Test
 	void integrationTest(){
-		ResponseEntity<Question[]> emptyRes = restTemplate.getForEntity("/quiz", Question[].class);
+		ResponseEntity<Question[]> emptyRes = restTemplate.getForEntity("/", Question[].class);
 		Assertions.assertThat(emptyRes.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(emptyRes.getBody()).isEmpty();
 
-		ResponseEntity<Question> postRes = restTemplate.postForEntity("/quiz", question , Question.class);
+		ResponseEntity<Question> postRes = restTemplate.postForEntity("/", question , Question.class);
 		Assertions.assertThat(postRes.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(postRes.getBody().getQuestion()).isEqualTo(question.getQuestion());
 
 		Question createdQuestion = postRes.getBody();
 
 		Question editedQuestion = new Question(createdQuestion.getId(), createdQuestion.getQuestion(),"Das Kolloseum", true);
-		restTemplate.put ("/quiz", editedQuestion);
-		ResponseEntity<Question[]> editedRes = restTemplate.getForEntity("/quiz", Question[].class);
+		restTemplate.put ("/", editedQuestion);
+		ResponseEntity<Question[]> editedRes = restTemplate.getForEntity("/", Question[].class);
 		Assertions.assertThat(editedRes.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(editedRes.getBody()).contains(editedQuestion);
 
-		ResponseEntity<Question> notApprovedQuestion = restTemplate.postForEntity("/quiz", new Question("Warum Java", "Darum") , Question.class);
-		ResponseEntity<Question[]> allQuestions = restTemplate.getForEntity("/quiz?showAll=1", Question[].class);
-		ResponseEntity<Question[]> approvedQuestions = restTemplate.getForEntity("/quiz?showAll=0", Question[].class);
+		ResponseEntity<Question> notApprovedQuestion = restTemplate.postForEntity("/", new Question("Warum Java", "Darum") , Question.class);
+		ResponseEntity<Question[]> allQuestions = restTemplate.getForEntity("/?showAll=1", Question[].class);
+		ResponseEntity<Question[]> approvedQuestions = restTemplate.getForEntity("/?showAll=0", Question[].class);
 		Assertions.assertThat(approvedQuestions.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(allQuestions.getBody().length).isEqualTo(2);
 		Assertions.assertThat(approvedQuestions.getBody().length).isEqualTo(1);
 		Assertions.assertThat(approvedQuestions.getBody()).contains(editedQuestion);
-		restTemplate.delete("/quiz/" + createdQuestion.getId());
-		ResponseEntity<Question[]> questionsAfterDel = restTemplate.getForEntity("/quiz?showAll=1", Question[].class);
+		restTemplate.delete("/" + createdQuestion.getId());
+		ResponseEntity<Question[]> questionsAfterDel = restTemplate.getForEntity("/?showAll=1", Question[].class);
 		Assertions.assertThat(questionsAfterDel.getStatusCode()).isEqualTo(HttpStatus.OK);
 		Assertions.assertThat(questionsAfterDel.getBody().length).isEqualTo(1);
 		
